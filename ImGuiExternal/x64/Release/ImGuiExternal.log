@@ -1,0 +1,11 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (ImGuiExternal.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  gui.cpp
+  artificial_intelligent.cpp
+  enhancement.cpp
+  player_menu.cpp
+  Generating code
+  17 of 1424 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    21 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  ImGuiExternal.vcxproj -> H:\Coding\Source\imgui\new\ImGuiExternal-master\x64\Release\Ellohim Template.exe

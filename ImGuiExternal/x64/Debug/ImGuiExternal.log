@@ -1,0 +1,40 @@
+﻿  main.cpp
+  renderer.cpp
+  Generating Code...
+renderer.obj : error LNK2005: "void __cdecl ellohim::MainLoop(void)" (?MainLoop@ellohim@@YAXXZ) already defined in main.obj
+renderer.obj : error LNK2005: "unsigned long __cdecl ellohim::ProcessCheck(void *)" (?ProcessCheck@ellohim@@YAKPEAX@Z) already defined in main.obj
+renderer.obj : error LNK2005: "void __cdecl ellohim::SetupWindow(void)" (?SetupWindow@ellohim@@YAXXZ) already defined in main.obj
+renderer.obj : error LNK2005: "__int64 __cdecl ellohim::WinProc(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?WinProc@ellohim@@YA_JPEAUHWND__@@I_K_J@Z) already defined in main.obj
+renderer.obj : error LNK2005: "void __cdecl ellohim::draw_overlay(void)" (?draw_overlay@ellohim@@YAXXZ) already defined in main.obj
+renderer.obj : error LNK2005: "bool __cdecl ellohim::dx_init(void)" (?dx_init@ellohim@@YA_NXZ) already defined in main.obj
+renderer.obj : error LNK2005: "void __cdecl ellohim::input_handler(void)" (?input_handler@ellohim@@YAXXZ) already defined in main.obj
+renderer.obj : error LNK2005: "void __cdecl ellohim::render_gui(void)" (?render_gui@ellohim@@YAXXZ) already defined in main.obj
+renderer.obj : error LNK2005: "unsigned long Process::ID" (?ID@Process@@3KA) already defined in main.obj
+renderer.obj : error LNK2005: "void * Process::Handle" (?Handle@Process@@3PEAXEA) already defined in main.obj
+renderer.obj : error LNK2005: "struct HWND__ * Process::Hwnd" (?Hwnd@Process@@3PEAUHWND__@@EA) already defined in main.obj
+renderer.obj : error LNK2005: "__int64 (__cdecl* Process::WndProc)(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?WndProc@Process@@3P6A_JPEAUHWND__@@I_K_J@ZEA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowWidth" (?WindowWidth@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowHeight" (?WindowHeight@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowLeft" (?WindowLeft@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowRight" (?WindowRight@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowTop" (?WindowTop@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "int Process::WindowBottom" (?WindowBottom@Process@@3HA) already defined in main.obj
+renderer.obj : error LNK2005: "char const * const Process::Title" (?Title@Process@@3PEBDEB) already defined in main.obj
+renderer.obj : error LNK2005: "char const * const Process::ClassName" (?ClassName@Process@@3PEBDEB) already defined in main.obj
+renderer.obj : error LNK2005: "char const * const Process::Path" (?Path@Process@@3PEBDEB) already defined in main.obj
+renderer.obj : error LNK2005: "struct tagWNDCLASSEXA OverlayWindow::WindowClass" (?WindowClass@OverlayWindow@@3UtagWNDCLASSEXA@@A) already defined in main.obj
+renderer.obj : error LNK2005: "struct HWND__ * OverlayWindow::Hwnd" (?Hwnd@OverlayWindow@@3PEAUHWND__@@EA) already defined in main.obj
+renderer.obj : error LNK2005: "char const * const OverlayWindow::Name" (?Name@OverlayWindow@@3PEBDEB) already defined in main.obj
+renderer.obj : error LNK2005: "struct IDirect3D9Ex * DirectX9Interface::Direct3D9" (?Direct3D9@DirectX9Interface@@3PEAUIDirect3D9Ex@@EA) already defined in main.obj
+renderer.obj : error LNK2005: "struct IDirect3DDevice9Ex * DirectX9Interface::pDevice" (?pDevice@DirectX9Interface@@3PEAUIDirect3DDevice9Ex@@EA) already defined in main.obj
+renderer.obj : error LNK2005: "struct _D3DPRESENT_PARAMETERS_ DirectX9Interface::pParams" (?pParams@DirectX9Interface@@3U_D3DPRESENT_PARAMETERS_@@A) already defined in main.obj
+renderer.obj : error LNK2005: "struct _MARGINS DirectX9Interface::Margin" (?Margin@DirectX9Interface@@3U_MARGINS@@A) already defined in main.obj
+renderer.obj : error LNK2005: "struct tagMSG DirectX9Interface::Message" (?Message@DirectX9Interface@@3UtagMSG@@A) already defined in main.obj
+renderer.obj : error LNK2005: "char const * const ellohim::TargetProcess" (?TargetProcess@ellohim@@3PEBDEB) already defined in main.obj
+renderer.obj : error LNK2005: "bool ellohim::ShowMenu" (?ShowMenu@ellohim@@3_NA) already defined in main.obj
+renderer.obj : error LNK2005: "bool ellohim::ImGui_Initialised" (?ImGui_Initialised@ellohim@@3_NA) already defined in main.obj
+renderer.obj : error LNK2005: "bool ellohim::CreateConsole" (?CreateConsole@ellohim@@3_NA) already defined in main.obj
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+    Hint on symbols that are defined and could potentially match:
+      "int __cdecl ellohim::main(void)" (?main@ellohim@@YAHXZ)
+H:\Coding\Source\imgui\new\ImGuiExternal-master\x64\Debug\Ellohim Template.exe : fatal error LNK1120: 1 unresolved externals
