@@ -6,6 +6,7 @@ namespace ellohim
 	{
 	public:
 		static void render_player_tab();
+	private:
 		static inline bool godmode{};
 		static inline bool auto_heal{};
 		static inline bool infinite_mp{};

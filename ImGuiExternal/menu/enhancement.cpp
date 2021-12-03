@@ -9,8 +9,6 @@ namespace ellohim
     {
         if (ImGui::BeginTabItem("Enhancement"))
         {
-            static int current_area = 0;
-            static const char* const area_list[] = { "+1", "+2", "+3" , "+4" , "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12", "+13", "+14", "+15", "+16", "+17", "+18", "+19", "+20" };
             ImGui::Text("Enhancement Effect Changer");
             ImGui::Combo("##Auto Area", &current_area, area_list, IM_ARRAYSIZE(area_list));
             if (ImGui::Button("Change Effect"))

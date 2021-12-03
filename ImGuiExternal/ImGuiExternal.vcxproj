@@ -177,6 +177,7 @@
     <ClCompile Include="menu\artificial_intelligent.cpp" />
     <ClCompile Include="menu\enhancement.cpp" />
     <ClCompile Include="menu\player_menu.cpp" />
+    <ClCompile Include="menu\setting.cpp" />
     <ClCompile Include="renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +196,7 @@
     <ClInclude Include="menu\artificial_intelligent.h" />
     <ClInclude Include="menu\enhancement.h" />
     <ClInclude Include="menu\player_menu.h" />
+    <ClInclude Include="menu\setting.h" />
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="renderer.hpp" />
   </ItemGroup>

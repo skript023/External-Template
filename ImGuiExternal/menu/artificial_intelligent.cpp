@@ -9,8 +9,6 @@ namespace ellohim
 	{
         if (ImGui::BeginTabItem("Bot Option"))
         {
-            static int current_area = 0;
-            static const char* const area_list[] = { "Planar Gate", "Ancient Dragon", "Reverse Theater" , "Purification Ops" , "Busan" };
             ImGui::Text("Auto Play");
             ImGui::Combo("##Auto Area", &current_area, area_list, IM_ARRAYSIZE(area_list));
             if (ImGui::Button("Set Auto Play"))
@@ -22,7 +20,7 @@ namespace ellohim
             {
                 bot::run_bot_through_map(area_list[current_area], false);
             }
-            static bool test = false;
+            
             ImGui::Checkbox("Bypass Captcha", &test);
 
             ImGui::EndTabItem();

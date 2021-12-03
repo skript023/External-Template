@@ -3,6 +3,7 @@
 #include "menu/player_menu.h"
 #include "menu/artificial_intelligent.h"
 #include "menu/enhancement.h"
+#include "menu/setting.h"
 
 namespace ellohim
 {
@@ -93,6 +94,7 @@ namespace ellohim
 			player_menu::render_player_tab();
 			bot_menu::render_bot_menu();
 			enhancement_menu::render_enhacement_menu();
+			setting::render_setting_menu();
 			ImGui::EndTabBar();
 		}
 		ImGui::End();

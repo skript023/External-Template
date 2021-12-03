@@ -9,7 +9,7 @@ namespace ellohim
 	using namespace overlay;
 	using namespace functions;
 
-	LPCSTR TargetProcess = "CW.EXE";
+	LPCSTR TargetProcess = "z2project.exe";
 	bool ShowMenu = true;
 	bool ImGui_Initialised = false;
 	bool CreateConsole = false;

@@ -6,10 +6,13 @@ namespace ellohim
 	{
 	public:
 		static void render_enhacement_menu();
-	public:
+	private:
 		static inline bool enhancement_success = false;
 		static inline bool no_fuel = false;
 		static inline bool no_vaccine = false;
+
+		static inline int current_area = 0;
+		static inline const char* const area_list[] = { "+1", "+2", "+3" , "+4" , "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12", "+13", "+14", "+15", "+16", "+17", "+18", "+19", "+20" };
 	};
 
 	inline static enhancement_menu g_enhancement;

@@ -64,6 +64,9 @@
     <ClCompile Include="menu\artificial_intelligent.cpp">
       <Filter>menu</Filter>
     </ClCompile>
+    <ClCompile Include="menu\setting.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Overlay.h">
@@ -115,6 +118,9 @@
       <Filter>menu</Filter>
     </ClInclude>
     <ClInclude Include="menu\artificial_intelligent.h">
+      <Filter>menu</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\setting.h">
       <Filter>menu</Filter>
     </ClInclude>
   </ItemGroup>

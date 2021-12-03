@@ -48,7 +48,7 @@ int main()
 	renderer::setup_window();
 	renderer::dx_init();
 	CreateThread(0, 0, renderer::process_check, 0, 0, 0);
-	while (TRUE)
+	while (true)
 	{
 		renderer::rendering();
 	}
