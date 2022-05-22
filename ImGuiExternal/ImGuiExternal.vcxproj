@@ -189,6 +189,7 @@
     <ClCompile Include="pointers.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="script_global.cpp" />
+    <ClCompile Include="script_local.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_function.hpp" />
@@ -217,7 +218,9 @@
     <ClInclude Include="pointers.hpp" />
     <ClInclude Include="renderer.hpp" />
     <ClInclude Include="script_global.hpp" />
+    <ClInclude Include="script_local.hpp" />
     <ClInclude Include="utility\joaat.hpp" />
+    <ClInclude Include="utility\utility.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="logger.hpp" />

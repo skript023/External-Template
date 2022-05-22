@@ -88,6 +88,9 @@
     <ClCompile Include="script_global.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="script_local.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Overlay.h">
@@ -170,6 +173,12 @@
     </ClInclude>
     <ClInclude Include="script_global.hpp">
       <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="script_local.hpp">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\utility.hpp">
+      <Filter>utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
