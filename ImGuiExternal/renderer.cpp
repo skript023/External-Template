@@ -9,10 +9,10 @@ namespace ellohim
 	using namespace overlay;
 	using namespace functions;
 
-	LPCSTR TargetProcess = "z2project.exe";
-	bool ShowMenu = true;
+	LPCSTR TargetProcess = "CW.exe";
+	//bool ShowMenu = true;
 	bool ImGui_Initialised = false;
-	bool CreateConsole = false;
+	bool CreateConsole = true;
 
 	namespace Process
 	{
@@ -65,14 +65,15 @@ namespace ellohim
 
 	void renderer::render_gui()
 	{
-		if (GetAsyncKeyState(VK_INSERT) & 1) ShowMenu = !ShowMenu;
+		if (GetAsyncKeyState(VK_INSERT) & 1) g_gui.m_opened = !g_gui.m_opened;
 		ImGui_ImplDX9_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 		draw_overlay();
-		ImGui::GetIO().MouseDrawCursor = ShowMenu;
+		ImGui::GetIO().MouseDrawCursor = g_gui.m_opened;
 
-		if (ShowMenu == true) {
+		if (g_gui.m_opened == true)
+		{
 			input_handler();
 
 			ellohim::g_gui.dx_on_tick();
@@ -81,7 +82,8 @@ namespace ellohim
 			UpdateWindow(OverlayWindow::Hwnd);
 			SetFocus(OverlayWindow::Hwnd);
 		}
-		else {
+		else 
+		{
 			SetWindowLong(OverlayWindow::Hwnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW);
 			UpdateWindow(OverlayWindow::Hwnd);
 		}
@@ -90,7 +92,7 @@ namespace ellohim
 		DirectX9Interface::pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
 		if (DirectX9Interface::pDevice->BeginScene() >= 0) {
 			ImGui::Render();
-			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());	
 			DirectX9Interface::pDevice->EndScene();
 		}
 
@@ -108,13 +110,15 @@ namespace ellohim
 		static RECT OldRect;
 		ZeroMemory(&DirectX9Interface::Message, sizeof(MSG));
 
-		while (DirectX9Interface::Message.message != WM_QUIT) {
+		if (DirectX9Interface::Message.message != WM_QUIT)
+		{
 			if (PeekMessage(&DirectX9Interface::Message, OverlayWindow::Hwnd, 0, 0, PM_REMOVE)) {
 				TranslateMessage(&DirectX9Interface::Message);
 				DispatchMessage(&DirectX9Interface::Message);
 			}
 			HWND ForegroundWindow = GetForegroundWindow();
-			if (ForegroundWindow == Process::Hwnd) {
+			if (ForegroundWindow == Process::Hwnd)
+			{
 				HWND TempProcessHwnd = GetWindow(ForegroundWindow, GW_HWNDPREV);
 				SetWindowPos(OverlayWindow::Hwnd, TempProcessHwnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 			}
@@ -132,7 +136,8 @@ namespace ellohim
 			ImGuiIO& io = ImGui::GetIO();
 			io.ImeWindowHandle = Process::Hwnd;
 
-			if (TempRect.left != OldRect.left || TempRect.right != OldRect.right || TempRect.top != OldRect.top || TempRect.bottom != OldRect.bottom) {
+			if (TempRect.left != OldRect.left || TempRect.right != OldRect.right || TempRect.top != OldRect.top || TempRect.bottom != OldRect.bottom)
+			{
 				OldRect = TempRect;
 				Process::WindowWidth = TempRect.right;
 				Process::WindowHeight = TempRect.bottom;
@@ -143,24 +148,15 @@ namespace ellohim
 			}
 			render_gui();
 		}
-		ImGui_ImplDX9_Shutdown();
-		ImGui_ImplWin32_Shutdown();
-		ImGui::DestroyContext();
-		if (DirectX9Interface::pDevice != NULL) {
-			DirectX9Interface::pDevice->EndScene();
-			DirectX9Interface::pDevice->Release();
-		}
-		if (DirectX9Interface::Direct3D9 != NULL) {
-			DirectX9Interface::Direct3D9->Release();
-		}
-		DestroyWindow(OverlayWindow::Hwnd);
-		UnregisterClass(OverlayWindow::WindowClass.lpszClassName, OverlayWindow::WindowClass.hInstance);
 	}
 
-	bool renderer::dx_init()
+	renderer::renderer()
 	{
-		if (FAILED(Direct3DCreate9Ex(D3D_SDK_VERSION, &DirectX9Interface::Direct3D9))) {
-			return false;
+		setup_window();
+
+		if (FAILED(Direct3DCreate9Ex(D3D_SDK_VERSION, &DirectX9Interface::Direct3D9)))
+		{
+			return;
 		}
 
 		D3DPRESENT_PARAMETERS Params = { 0 };
@@ -177,9 +173,10 @@ namespace ellohim
 		Params.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
 		Params.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 
-		if (FAILED(DirectX9Interface::Direct3D9->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, OverlayWindow::Hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &Params, 0, &DirectX9Interface::pDevice))) {
+		if (FAILED(DirectX9Interface::Direct3D9->CreateDeviceEx(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, OverlayWindow::Hwnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &Params, 0, &DirectX9Interface::pDevice)))
+		{
 			DirectX9Interface::Direct3D9->Release();
-			return false;
+			return;
 		}
 
 		ImGui::CreateContext();
@@ -190,7 +187,28 @@ namespace ellohim
 		ImGui_ImplWin32_Init(OverlayWindow::Hwnd);
 		ImGui_ImplDX9_Init(DirectX9Interface::pDevice);
 		DirectX9Interface::Direct3D9->Release();
-		return true;
+
+		g_renderer = this;
+	}
+
+	renderer::~renderer()
+	{
+		ImGui_ImplDX9_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+		ImGui::DestroyContext();
+		if (DirectX9Interface::pDevice != NULL)
+		{
+			DirectX9Interface::pDevice->EndScene();
+			DirectX9Interface::pDevice->Release();
+		}
+		if (DirectX9Interface::Direct3D9 != NULL)
+		{
+			DirectX9Interface::Direct3D9->Release();
+		}
+		DestroyWindow(OverlayWindow::Hwnd);
+		UnregisterClass(OverlayWindow::WindowClass.lpszClassName, OverlayWindow::WindowClass.hInstance);
+
+		g_renderer = nullptr;
 	}
 	
 	LRESULT CALLBACK renderer::WinProc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
@@ -198,7 +216,8 @@ namespace ellohim
 		if (ImGui_ImplWin32_WndProcHandler(hWnd, Message, wParam, lParam))
 			return true;
 
-		switch (Message) {
+		switch (Message)
+		{
 		case WM_DESTROY:
 			if (DirectX9Interface::pDevice != NULL) {
 				DirectX9Interface::pDevice->EndScene();
@@ -211,7 +230,8 @@ namespace ellohim
 			exit(4);
 			break;
 		case WM_SIZE:
-			if (DirectX9Interface::pDevice != NULL && wParam != SIZE_MINIMIZED) {
+			if (DirectX9Interface::pDevice != NULL && wParam != SIZE_MINIMIZED)
+			{
 				ImGui_ImplDX9_InvalidateDeviceObjects();
 				DirectX9Interface::pParams.BackBufferWidth = LOWORD(lParam);
 				DirectX9Interface::pParams.BackBufferHeight = HIWORD(lParam);
@@ -230,12 +250,14 @@ namespace ellohim
 
 	void renderer::setup_window()
 	{
-		OverlayWindow::WindowClass = {
+		OverlayWindow::WindowClass = 
+		{
 			sizeof(WNDCLASSEX), 0, WinProc, 0, 0, nullptr, LoadIcon(nullptr, IDI_APPLICATION), LoadCursor(nullptr, IDC_ARROW), nullptr, nullptr, OverlayWindow::Name, LoadIcon(nullptr, IDI_APPLICATION)
 		};
 
 		RegisterClassEx(&OverlayWindow::WindowClass);
-		if (Process::Hwnd) {
+		if (Process::Hwnd)
+		{
 			static RECT TempRect = { NULL };
 			static POINT TempPoint;
 			GetClientRect(Process::Hwnd, &TempRect);
@@ -255,12 +277,11 @@ namespace ellohim
 
 	DWORD WINAPI renderer::process_check(LPVOID lpParameter)
 	{
-		while (true)
+		if (Process::Hwnd != NULL)
 		{
-			if (Process::Hwnd != NULL) {
-				if (GetProcessId(TargetProcess) == 0) {
-					exit(0);
-				}
+			if (GetProcessId(TargetProcess) == 0)
+			{
+				exit(0);
 			}
 		}
 	}

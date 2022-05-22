@@ -1,6 +1,5 @@
 #pragma once
-#include "memory/pattern_scanner.h"
-#include "memory/memory_handle.hpp"
+#include "pointer.hpp"
 
 namespace ellohim
 {
@@ -10,16 +9,17 @@ namespace ellohim
 		explicit pointers();
 		~pointers();
 	public:
-		DWORD64 m_ped_factory;
-		DWORD64 m_script_global;
-		DWORD64 m_blip_list;
-		DWORD64 m_network_player_mgr;
-		DWORD64 m_local_script;
-		DWORD64 m_replay_interface;
-		DWORD64 m_blackout;
-		DWORD64 m_is_session_started;
-		DWORD64 m_game_state;
-		DWORD64 m_cutscene_mgr;
-		DWORD64 m_script_local;
+		pointer<bool> m_is_session_started;
+		pointer<uint64_t> m_ped_factory;
+		pointer<uint64_t> m_script_globals;
+		pointer<uint64_t> m_blip_list;
+		pointer<uint64_t> m_network_player_mgr;
+		pointer<uint64_t> m_script_local;
+		pointer<uint64_t> m_replay_interface;
+		pointer<uint64_t> m_blackout;
+		pointer<uint64_t> m_game_state;
+		pointer<uint64_t> m_cutscene_mgr;
 	};
+
+	inline pointers* g_pointers;
 }

@@ -28,6 +28,7 @@ namespace ellohim
 		static inline int magical_attack{};
 		static inline int physical_deff{};
 		static inline int magical_deff{};
+		static inline float item_found{};
 
 
 	};

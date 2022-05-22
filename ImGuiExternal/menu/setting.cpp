@@ -1,6 +1,6 @@
 #include "setting.h"
-#include "../ImGui/imgui.h"
-#include "../bot_function.hpp"
+#include "ImGui/imgui.h"
+#include "bot_function.hpp"
 
 
 namespace ellohim
@@ -11,7 +11,7 @@ namespace ellohim
         {
             if (ImGui::Button("Quit"))
             {
-                exit(0);
+                g_running = false;
             }
 
             ImGui::EndTabItem();

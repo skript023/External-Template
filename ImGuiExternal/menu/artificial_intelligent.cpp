@@ -1,7 +1,7 @@
-#include "../bot_function.hpp"
+#include "bot_function.hpp"
 #include "artificial_intelligent.h"
-#include "../ImGui/imgui.h"
-#include "../bot_function.hpp"
+#include "ImGui/imgui.h"
+#include "bot_function.hpp"
 
 namespace ellohim
 {

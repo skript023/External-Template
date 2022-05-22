@@ -4,22 +4,27 @@
 namespace ellohim
 {
 	extern LPCSTR TargetProcess;
-	extern bool ShowMenu;
+	//extern bool ShowMenu;
 	extern bool ImGui_Initialised;
 	extern bool CreateConsole;
 
 	class renderer
 	{
 	public:
-		static void render_gui();
-		static void input_handler();
-		static void draw_overlay();
-		static void rendering();
+		explicit renderer();
+		~renderer();
+
+		void render_gui();
+		void input_handler();
+		void draw_overlay();
+		void rendering();
 		static bool dx_init();
 		static LRESULT CALLBACK WinProc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam);
-		static void setup_window();
+		void setup_window();
 		static DWORD WINAPI process_check(LPVOID lpParameter);
 	};
+
+	inline renderer* g_renderer{};
 }
 
 namespace ellohim::Process

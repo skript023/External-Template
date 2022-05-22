@@ -1,8 +1,7 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (ImGuiExternal.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  renderer.cpp
+﻿  player_menu.cpp
   Generating code
-  3 of 1425 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    20 functions had inline decision re-evaluated but remain unchanged
+  9 of 3303 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    27 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  ImGuiExternal.vcxproj -> C:\dbase\Coding\trash\Source\imgui\new\ImGuiExternal-master\x64\Release\Ellohim Template.exe
+  ImGuiExternal.vcxproj -> H:\Coding\External-Template\x64\Release\Ellohim Template.exe

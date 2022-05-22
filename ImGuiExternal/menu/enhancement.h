@@ -11,8 +11,8 @@ namespace ellohim
 		static inline bool no_fuel = false;
 		static inline bool no_vaccine = false;
 
-		static inline int current_area = 0;
-		static inline const char* const area_list[] = { "+1", "+2", "+3" , "+4" , "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12", "+13", "+14", "+15", "+16", "+17", "+18", "+19", "+20" };
+		static inline int current_enhancement = 0;
+		static inline const char* const enhancement_list[] = { "+1", "+2", "+3" , "+4" , "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12", "+13", "+14", "+15", "+16", "+17", "+18", "+19", "+20", "+21", "+22"};
 	};
 
 	inline static enhancement_menu g_enhancement;

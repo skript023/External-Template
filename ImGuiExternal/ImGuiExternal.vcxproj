@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -151,8 +151,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeaderFile>common.hpp</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>H:\Coding\External-Template\ImGuiExternal;H:\Coding\External-Template\vendor\g3log\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>common.hpp</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,6 +170,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp" />
+    <ClCompile Include="file_manager\file.cpp" />
+    <ClCompile Include="file_manager\folder.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -174,15 +181,21 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="memory\pattern.cpp" />
     <ClCompile Include="menu\artificial_intelligent.cpp" />
     <ClCompile Include="menu\enhancement.cpp" />
     <ClCompile Include="menu\player_menu.cpp" />
     <ClCompile Include="menu\setting.cpp" />
+    <ClCompile Include="pointers.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="script_global.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot_function.hpp" />
     <ClInclude Include="common.hpp" />
+    <ClInclude Include="file_manager.hpp" />
+    <ClInclude Include="file_manager\file.hpp" />
+    <ClInclude Include="file_manager\folder.hpp" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="gui.hpp" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -193,12 +206,26 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="memory\pattern.hpp" />
+    <ClInclude Include="memory\process.hpp" />
     <ClInclude Include="menu\artificial_intelligent.h" />
     <ClInclude Include="menu\enhancement.h" />
     <ClInclude Include="menu\player_menu.h" />
     <ClInclude Include="menu\setting.h" />
     <ClInclude Include="Overlay.h" />
+    <ClInclude Include="pointer.hpp" />
+    <ClInclude Include="pointers.hpp" />
     <ClInclude Include="renderer.hpp" />
+    <ClInclude Include="script_global.hpp" />
+    <ClInclude Include="utility\joaat.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="logger.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\vendor\g3log\g3log.vcxproj">
+      <Project>{81ad640f-edc1-8cc0-b643-3020221789f1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

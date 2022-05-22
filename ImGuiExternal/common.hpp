@@ -9,6 +9,15 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <atomic>
+#include <optional>
+#include <filesystem>
+#include <fstream>
+#include <map>
+
+#include <g3log/g3log.hpp>
 
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
+
+inline std::atomic_bool g_running{ true };
