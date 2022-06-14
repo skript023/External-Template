@@ -21,7 +21,7 @@ namespace ellohim
 
 	uintptr_t script_local::get()
 	{
-		auto result = g_process->read<uintptr_t>(m_stack) + (0x8 * m_index);
-		return result;
+		//auto result = g_process->read<uintptr_t>(m_stack) + (0x8 * m_index);
+		return 0;
 	}
 }

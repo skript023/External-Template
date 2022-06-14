@@ -2,50 +2,16 @@
 #include "Overlay.h"
 #include "Functions.h"
 #include "renderer.hpp"
+#include "pointers.hpp"
+#include "features.hpp"
+#include "fonts/font_list.hpp"
+#include "script.hpp"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace ellohim
 {
 	using namespace overlay;
 	using namespace functions;
-
-	LPCSTR TargetProcess = "CW.exe";
-	//bool ShowMenu = true;
-	bool ImGui_Initialised = false;
-	bool CreateConsole = false;
-
-	namespace Process
-	{
-		DWORD ID;
-		HANDLE Handle;
-		HWND Hwnd;
-		WNDPROC WndProc;
-		int WindowWidth;
-		int WindowHeight;
-		int WindowLeft;
-		int WindowRight;
-		int WindowTop;
-		int WindowBottom;
-		LPCSTR Title;
-		LPCSTR ClassName;
-		LPCSTR Path;
-	}
-
-	namespace OverlayWindow
-	{
-		WNDCLASSEX WindowClass;
-		HWND Hwnd;
-		LPCSTR Name;
-	}
-
-	namespace DirectX9Interface
-	{
-		IDirect3D9Ex* Direct3D9 = NULL;
-		IDirect3DDevice9Ex* pDevice = NULL;
-		D3DPRESENT_PARAMETERS pParams = { NULL };
-		MARGINS Margin = { -1 };
-		MSG Message = { NULL };
-	}
 
 	void renderer::input_handler()
 	{
@@ -63,7 +29,7 @@ namespace ellohim
 		DrawStrokeText(30, 44, &White, FpsInfo);
 	}
 
-	void renderer::render_gui()
+	void renderer::on_present()
 	{
 		if (GetAsyncKeyState(VK_INSERT) & 1) g_gui.m_opened = !g_gui.m_opened;
 		ImGui_ImplDX9_NewFrame();
@@ -76,13 +42,13 @@ namespace ellohim
 		{
 			input_handler();
 
-			ellohim::g_gui.dx_on_tick();
+			g_gui.dx_on_tick();
 
 			SetWindowLong(OverlayWindow::Hwnd, GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 			UpdateWindow(OverlayWindow::Hwnd);
 			SetFocus(OverlayWindow::Hwnd);
 		}
-		else 
+		else
 		{
 			SetWindowLong(OverlayWindow::Hwnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW);
 			UpdateWindow(OverlayWindow::Hwnd);
@@ -90,9 +56,10 @@ namespace ellohim
 		ImGui::EndFrame();
 
 		DirectX9Interface::pDevice->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_ARGB(0, 0, 0, 0), 1.0f, 0);
-		if (DirectX9Interface::pDevice->BeginScene() >= 0) {
+		if (DirectX9Interface::pDevice->BeginScene() >= 0)
+		{
 			ImGui::Render();
-			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());	
+			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 			DirectX9Interface::pDevice->EndScene();
 		}
 
@@ -105,14 +72,15 @@ namespace ellohim
 		}
 	}
 
-	void renderer::rendering()
+	void renderer::render_on_tick()
 	{
 		static RECT OldRect;
 		ZeroMemory(&DirectX9Interface::Message, sizeof(MSG));
 
 		if (DirectX9Interface::Message.message != WM_QUIT)
 		{
-			if (PeekMessage(&DirectX9Interface::Message, OverlayWindow::Hwnd, 0, 0, PM_REMOVE)) {
+			if (PeekMessage(&DirectX9Interface::Message, OverlayWindow::Hwnd, 0, 0, PM_REMOVE))
+			{
 				TranslateMessage(&DirectX9Interface::Message);
 				DispatchMessage(&DirectX9Interface::Message);
 			}
@@ -146,12 +114,13 @@ namespace ellohim
 				SetWindowPos(OverlayWindow::Hwnd, (HWND)0, TempPoint.x, TempPoint.y, Process::WindowWidth, Process::WindowHeight, SWP_NOREDRAW);
 				DirectX9Interface::pDevice->Reset(&DirectX9Interface::pParams);
 			}
-			render_gui();
+			on_present();
 		}
 	}
 
 	renderer::renderer()
 	{
+		init_overlay();
 		setup_window();
 
 		if (FAILED(Direct3DCreate9Ex(D3D_SDK_VERSION, &DirectX9Interface::Direct3D9)))
@@ -186,6 +155,15 @@ namespace ellohim
 
 		ImGui_ImplWin32_Init(OverlayWindow::Hwnd);
 		ImGui_ImplDX9_Init(DirectX9Interface::pDevice);
+
+		ImFontConfig font_cfg{};
+		font_cfg.FontDataOwnedByAtlas = false;
+		std::strcpy(font_cfg.Name, "Rubik");
+
+		ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_rubik), sizeof(font_rubik), 14.f, &font_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+
+		ImGui::GetIO().Fonts->AddFontDefault();
+
 		DirectX9Interface::Direct3D9->Release();
 
 		g_renderer = this;
@@ -210,7 +188,7 @@ namespace ellohim
 
 		g_renderer = nullptr;
 	}
-	
+
 	LRESULT CALLBACK renderer::WinProc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
 	{
 		if (ImGui_ImplWin32_WndProcHandler(hWnd, Message, wParam, lParam))
@@ -219,11 +197,13 @@ namespace ellohim
 		switch (Message)
 		{
 		case WM_DESTROY:
-			if (DirectX9Interface::pDevice != NULL) {
+			if (DirectX9Interface::pDevice != NULL) 
+			{
 				DirectX9Interface::pDevice->EndScene();
 				DirectX9Interface::pDevice->Release();
 			}
-			if (DirectX9Interface::Direct3D9 != NULL) {
+			if (DirectX9Interface::Direct3D9 != NULL)
+			{
 				DirectX9Interface::Direct3D9->Release();
 			}
 			PostQuitMessage(0);
@@ -250,8 +230,7 @@ namespace ellohim
 
 	void renderer::setup_window()
 	{
-		OverlayWindow::WindowClass = 
-		{
+		OverlayWindow::WindowClass = {
 			sizeof(WNDCLASSEX), 0, WinProc, 0, 0, nullptr, LoadIcon(nullptr, IDI_APPLICATION), LoadCursor(nullptr, IDC_ARROW), nullptr, nullptr, OverlayWindow::Name, LoadIcon(nullptr, IDI_APPLICATION)
 		};
 
@@ -282,6 +261,48 @@ namespace ellohim
 			if (GetProcessId(TargetProcess) == 0)
 			{
 				exit(0);
+			}
+		}
+	}
+
+	void renderer::init_overlay()
+	{
+		if (CreateConsole == false)
+			ShowWindow(GetConsoleWindow(), SW_HIDE);
+
+		bool WindowFocus = false;
+		while (WindowFocus == false)
+		{
+			DWORD ForegroundWindowProcessID;
+			GetWindowThreadProcessId(GetForegroundWindow(), &ForegroundWindowProcessID);
+			if (functions::GetProcessId(TargetProcess) == ForegroundWindowProcessID)
+			{
+				Process::ID = GetCurrentProcessId();
+				Process::Handle = GetCurrentProcess();
+				Process::Hwnd = GetForegroundWindow();
+
+				RECT TempRect;
+				GetWindowRect(Process::Hwnd, &TempRect);
+				Process::WindowWidth = TempRect.right - TempRect.left;
+				Process::WindowHeight = TempRect.bottom - TempRect.top;
+				Process::WindowLeft = TempRect.left;
+				Process::WindowRight = TempRect.right;
+				Process::WindowTop = TempRect.top;
+				Process::WindowBottom = TempRect.bottom;
+
+				char TempTitle[MAX_PATH];
+				GetWindowText(Process::Hwnd, TempTitle, sizeof(TempTitle));
+				Process::Title = TempTitle;
+
+				char TempClassName[MAX_PATH];
+				GetClassName(Process::Hwnd, TempClassName, sizeof(TempClassName));
+				Process::ClassName = TempClassName;
+
+				char TempPath[MAX_PATH];
+				GetModuleFileNameEx(Process::Handle, NULL, TempPath, sizeof(TempPath));
+				Process::Path = TempPath;
+
+				WindowFocus = true;
 			}
 		}
 	}

@@ -21,8 +21,8 @@ namespace ellohim
 
 	uintptr_t script_global::get()
 	{
-		auto global_index = g_pointers->m_script_globals + (8 * (m_index >> 0x12 & 0x3F));
-		auto global_address = g_process->read<uint64_t>(global_index) + (8 * (m_index & 0x3FFFF));
-		return global_address;
+		//auto global_index = g_pointers->m_script_globals + (8 * (m_index >> 0x12 & 0x3F));
+		//auto global_address = g_process->read<uint64_t>(global_index) + (8 * (m_index & 0x3FFFF));
+		return 0;
 	}
 }

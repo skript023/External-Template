@@ -30,14 +30,14 @@ namespace ellohim
 
 		pattern& scan();
 
-		inline pattern add(size_t n)
+		inline pattern add(size_t sigOffset)
 		{
-			return pattern(name, address + n);
+			return pattern(name, address + sigOffset);
 		}
 
-		inline pattern sub(size_t n) 
+		inline pattern sub(size_t sigOffset)
 		{
-			return pattern(name, address - n);
+			return pattern(name, address - sigOffset);
 		}
 
 		pattern rip();

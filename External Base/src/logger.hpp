@@ -16,6 +16,12 @@ namespace ellohim
 		return system_clock::to_time_t(sctp);
 	}
 
+	static const int kRawValue = 600;
+
+	const LEVELS
+		RAW_GREEN_TO_CONSOLE{ kRawValue, {"RAW_GREEN_TO_CONSOLE"} },
+		RAW_RED{ kRawValue, {"RAW_RED"} };
+
 	class logger;
 	inline logger* g_log{};
 
@@ -42,7 +48,7 @@ namespace ellohim
 	public:
 		logger(std::string_view console_title, file file, bool attach_console = true)
 			: m_attach_console(attach_console), m_did_console_exist(false),
-			m_console_title(console_title), m_original_console_mode(1),
+			m_console_title(console_title), m_original_console_mode(0),
 			m_console_handle(nullptr), m_file(file),
 			m_worker(g3::LogWorker::createLogWorker())
 		{
@@ -133,7 +139,7 @@ namespace ellohim
 		void open_outstreams()
 		{
 			if (m_attach_console)
-				//m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
+				m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
 
 			m_file_out.open(m_file.get_path(), std::ios_base::out | std::ios_base::trunc);
 		}
@@ -150,10 +156,18 @@ namespace ellohim
 		{
 			void callback(g3::LogMessageMover log)
 			{
-				if (g_log->m_console_out.is_open())
-					g_log->m_console_out << log.get().toString(log_sink::format_console) << std::flush;
+				g3::LogMessage log_message = log.get();
+				int level_value = log_message._level.value;
 
-				g_log->m_file_out << log.get().toString(log_sink::format_file) << std::flush;
+				bool is_raw = level_value == RAW_GREEN_TO_CONSOLE.value;
+
+				if (g_log->m_console_out.is_open())
+					g_log->m_console_out << log_message.toString(is_raw ? log_sink::format_raw : log_sink::format_console) << std::flush;
+
+				if (!is_raw)
+				{
+					g_log->m_file_out << log.get().toString(log_sink::format_file) << std::flush;
+				}
 			}
 
 			static LogColor get_color(const LEVELS level)
@@ -166,6 +180,8 @@ namespace ellohim
 					return LogColor::GREEN;
 				case g3::kWarningValue:
 					return LogColor::YELLOW;
+				case kRawValue:
+					return LogColor::GREEN;
 				}
 				return g3::internal::wasFatal(level) ? LogColor::RED : LogColor::WHITE;
 			}
@@ -176,12 +192,19 @@ namespace ellohim
 				std::stringstream out;
 
 				out
-					<< "[" << msg.timestamp("%H:%M:%S") << "]"
 					<< AddColorToStream(color)
-					<< "[" << std::setw(7) << msg.level() << "/"
-					<< msg.file() << ":" << msg.line() << "]"
-					<< ResetStreamColor
-					<< ": ";
+					<< "[" << msg.timestamp("%H:%M:%S") << "]"
+					<< "[" << msg.level() << "]"
+					<< "[" << msg.file() << ":" << msg.line() << "]"
+					<< ": ";//<< ResetStreamColor
+
+				return out.str();
+			}
+			static std::string format_raw(const g3::LogMessage& msg)
+			{
+				LogColor color = log_sink::get_color(msg._level);
+				std::stringstream out;
+				out << AddColorToStream(color);
 
 				return out.str();
 			}
@@ -192,8 +215,8 @@ namespace ellohim
 
 				out
 					<< "[" << msg.timestamp("%H:%M:%S") << "]"
-					<< "[" << std::setw(7) << msg.level() << "/"
-					<< msg.file() << ":" << msg.line() << "]"
+					<< "[" << msg.level() << "]"
+					<< "[" << msg.file() << ":" << msg.line() << "]"
 					<< ": ";
 
 				return out.str();

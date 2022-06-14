@@ -15,8 +15,7 @@ namespace ellohim
 		uintptr_t m_base_address;
 		size_t m_size;
 
-		process(uint32_t pid) :
-			m_pid(pid)
+		process(uint32_t pid) : m_pid(pid)
 		{
 			m_handle = ::OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 			if (!m_handle)

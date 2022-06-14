@@ -129,7 +129,7 @@ workspace "External Base"
     kind "ConsoleApp"
     language "C++"
 
-    targetdir ("bin/lib/" .. outputdir)
+    targetdir ("bin/" .. outputdir)
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
 
     PrecompiledHeaderInclude = "common.hpp"
